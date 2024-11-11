@@ -4,6 +4,8 @@
 
 This project implements a customer support chatbot using a fine-tuned T5 model. The project includes the code for fine-tuning the T5 model and a web interface to deploy the chatbot. The model was trained on Kaggle with 2 GPUs and is publicly uploaded on Hugging Face. The web interface uses Hugging Face's API to send requests from HTML and receive responses from the model.
 
+You can access the model on Hugging Face here: [T5 Chatbot Customer Support](https://huggingface.co/sunbv56/T5_Chatbot_CustomerSupport)
+
 ## Project Description
 
 The project consists of two main parts:
