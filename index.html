@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Customer Support</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e5ddd5;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background-color: #e5ddd5;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            width: 100%;
+            text-shadow: 1px 1px 2px #0084ff, 0 0 25px #0084ff, 0 0 5px #0084ff;
+            margin-bottom: 50px;
+        }
+
+        .chatbot-container {
+            width: 500px;
+            max-width: 90%;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            max-height: 500px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f0f0f0;
+        }
+
+        .chat-bubble {
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 20px;
+            font-size: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            max-width: 94%;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #0084ff;
+            color: white;
+            text-align: right;
+            border-bottom-right-radius: 0;
+            max-width: 100%;
+            margin-left: 20px;
+            box-sizing: border-box;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #e4e6eb;
+            color: black;
+            text-align: left;
+            max-width: 100%;
+            border-bottom-left-radius: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+        }
+
+        .send-button {
+            padding: 15px;
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .send-button:hover {
+            background-color: #006bbf;
+        }
+
+        .send-button:disabled {
+            background-color: #b0b0b0;
+            cursor: not-allowed;
+        }
+
+        #gifLoading {
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            display: block;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Chatbot Customer Support</h1>
+    <div class="chatbot-container">
+        <div id="chatBox" class="chat-box">
+            <img id="gifLoading" src="https://cdn-icons-gif.flaticon.com/11184/11184177.gif" alt="loading">
+        </div>
+
+        <div class="input-container">
+            <input id="userInput" class="input-field" type="text" placeholder="Type a message...">
+            <button id="sendButton" class="send-button" onclick="askQuestion()">Send</button>
+        </div>
+        <button id="reloadButton" class="send-button" onclick="reloadRequest()"
+            style="display: none; margin-top: 10px;">Reload</button>
+    </div>
+
+    <script>
+        let lastUserInput = '';
+
+        async function askQuestion() {
+            const userInput = document.getElementById('userInput').value;
+            const chatBox = document.getElementById('chatBox');
+            const sendButton = document.getElementById('sendButton');
+            const reloadButton = document.getElementById('reloadButton');
+            const userInputField = document.getElementById('userInput');
+
+            if (!userInput) return;
+
+            // Lưu giá trị userInput vào biến toàn cục nếu có lỗi
+            lastUserInput = userInput;
+
+            // Vô hiệu hóa nút gửi và ô nhập liệu khi đang trả lời
+            sendButton.disabled = true;
+            userInputField.disabled = true;
+
+            document.getElementById('gifLoading').style.display = 'none';
+
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-bubble user-message';
+            userMessage.innerText = userInput;
+            chatBox.appendChild(userMessage);
+            document.getElementById('userInput').value = '';  // Clear input after sending message
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const botLoadingMessage = document.createElement('div');
+            botLoadingMessage.className = 'chat-bubble bot-message';
+            botLoadingMessage.innerText = 'Loading...';
+            chatBox.appendChild(botLoadingMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch("https://api-inference.huggingface.co/models/sunbv56/T5_Chatbot_CustomerSupport", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer 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",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        inputs: userInput,
+                        parameters: {
+                            max_length: 256,
+                            num_beams: 7,
+                            early_stopping: true,
+                            do_sample: true,
+                            temperature: 0.7,
+                            top_k: 100,
+                            top_p: 0.9,
+                            repetition_penalty: 1.5
+                        }
+                    })
+                });
+
+                const result = await response.json();
+
+                chatBox.removeChild(botLoadingMessage);
+
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-bubble bot-message';
+
+                if (result.error) {
+                    botMessage.innerText = `An error occurred. Please try again.`;
+                    reloadButton.style.display = 'block'; // Show reload button on error
+                } else if (result.length > 0 && result[0].generated_text) {
+                    const text = result[0].generated_text;
+                    botMessage.innerText = "";
+                    const words = text.split(" ").map(word => word.replace(" ", "\u00A0"));
+                    let i = 0;
+
+                    // Thêm đoạn mã sau vào để chèn từ từng từ vào tin nhắn bot
+                    const interval = setInterval(() => {
+                        botMessage.innerText += words[i] + " ";
+                        i++;
+                        chatBox.scrollTop = chatBox.scrollHeight; // Scrolls as each word is added
+                        if (i === words.length) {
+                            clearInterval(interval);
+
+                            // Sau khi hoàn thành, focus vào ô nhập liệu
+                            setTimeout(() => {
+                                userInputField.focus();
+                            }, 500);  // Thời gian hoãn để đảm bảo chatbot đã hoàn thành việc trả lời
+                        }
+                    }, 100);
+                } else {
+                    botMessage.innerText = "No response received.";
+                }
+
+                chatBox.appendChild(botMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            } catch (error) {
+                chatBox.removeChild(botLoadingMessage);
+
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'chat-bubble bot-message';
+                errorMessage.innerText = "An error occurred. Please try again.";
+                chatBox.appendChild(errorMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                reloadButton.style.display = 'block'; // Show reload button on error
+
+                console.error("Error:", error);
+            } finally {
+                // Mở lại nút gửi và ô nhập liệu nếu có lỗi hoặc hoàn tất
+                sendButton.disabled = false;
+                userInputField.disabled = false;
+            }
+        }
+
+        // Hàm reload để tái sử dụng giá trị lastUserInput
+        function reloadRequest() {
+            if (lastUserInput) {
+                document.getElementById('userInput').value = lastUserInput;  // Tải lại userInput
+                askQuestion();  // Gọi lại hàm askQuestion để thực hiện request với giá trị đã lưu
+            }
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                askQuestion();
+            }
+        });
+
+        async function initialConnection() {
+            try {
+                const response = await fetch("https://api-inference.huggingface.co/models/sunbv56/T5_Chatbot_CustomerSupport");
+                if (response.ok) {
+                    // document.getElementById('gifLoading').style.display = 'none'; // Hide loading gif after successful connection
+                } else {
+                    console.error("Initial connection failed:", response.status);
+                }
+            } catch (error) {
+                console.error("Initial connection failed:", error);
+            }
+        }
+
+        initialConnection();
+    </script>
+</body>
+
+</html>
