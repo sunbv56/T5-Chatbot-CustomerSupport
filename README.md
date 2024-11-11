@@ -2,74 +2,74 @@
 
 # T5 Chatbot for Customer Support
 
-Dự án này triển khai một chatbot hỗ trợ khách hàng sử dụng mô hình T5 fine-tuned, nhằm trả lời các câu hỏi phổ biến của khách hàng. Dự án bao gồm mã nguồn fine-tune mô hình T5 và giao diện web để triển khai chatbot. Mô hình đã được huấn luyện trên Kaggle với 2 GPU và đã được upload công khai lên Hugging Face. Giao diện web sử dụng API của Hugging Face để gửi yêu cầu từ HTML và nhận phản hồi từ mô hình.
+This project implements a customer support chatbot using a fine-tuned T5 model. The project includes the code for fine-tuning the T5 model and a web interface to deploy the chatbot. The model was trained on Kaggle with 2 GPUs and is publicly uploaded on Hugging Face. The web interface uses Hugging Face's API to send requests from HTML and receive responses from the model.
 
-## Mô tả Dự án
+## Project Description
 
-Dự án bao gồm hai phần chính:
+The project consists of two main parts:
 
-1. **Fine-tuning T5 Model**: Tệp `t5-chatbot-bitext-gen-ai-chatbot-customer-support.ipynb` chứa mã nguồn để fine-tune mô hình T5. Mô hình này được huấn luyện để có thể trả lời các câu hỏi hỗ trợ khách hàng một cách tự nhiên và chính xác. Mô hình được huấn luyện trên Kaggle với sự hỗ trợ của 2 GPU.
+1. **Fine-tuning the T5 Model**: The file `t5-chatbot-bitext-gen-ai-chatbot-customer-support.ipynb` contains the code for fine-tuning the T5 model. The model is trained to answer common customer support questions in a natural and accurate way. The model was trained on Kaggle with 2 GPUs.
 
-2. **Triển khai Giao diện Web**: Tệp `index.html` cung cấp giao diện người dùng đơn giản cho chatbot, giúp người dùng dễ dàng tương tác với chatbot qua web. Giao diện web này sử dụng API của Hugging Face để gửi các yêu cầu từ HTML và nhận phản hồi từ mô hình đã được huấn luyện.
+2. **Web Interface Deployment**: The file `index.html` provides a simple user interface for the chatbot, allowing users to interact with the chatbot via a web interface. This web interface uses Hugging Face's API to send requests from HTML and receive responses from the trained model.
 
-## Cấu trúc Dự án
+## Project Structure
 
 - **t5-chatbot-bitext-gen-ai-chatbot-customer-support.ipynb**:
-  - Tiền xử lý dữ liệu huấn luyện.
-  - Fine-tuning mô hình T5 trên dữ liệu hỗ trợ khách hàng.
-  - Lưu trữ mô hình đã được huấn luyện để sử dụng cho chatbot.
+  - Data preprocessing for training.
+  - Fine-tuning the T5 model on the customer support dataset.
+  - Saving the fine-tuned model for use in the chatbot.
 
 - **index.html**:
-  - Giao diện người dùng giúp người dùng tương tác với chatbot trên nền tảng web thông qua API của Hugging Face.
+  - A simple user interface to interact with the chatbot via the web using Hugging Face’s API.
 
-## Cài đặt Môi trường
+## Setting Up the Environment
 
-1. **Clone repository**:
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/sunbv56/T5-Chatbot-CustomerSupport.git
    cd T5-Chatbot-CustomerSupport
    ```
 
-2. **Cài đặt các thư viện yêu cầu**:
-   Sau khi tạo môi trường ảo, bạn có thể cài đặt các thư viện cần thiết bằng lệnh sau:
+2. **Install the required libraries**:
+   After setting up a virtual environment, install the necessary libraries using the following command:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-## Huấn luyện Mô hình
+## Training the Model
 
-1. **Mở tệp `t5-chatbot-bitext-gen-ai-chatbot-customer-support.ipynb`**:
-   - Sử dụng Jupyter Notebook hoặc Google Colab để mở và chạy notebook.
-   - Notebook này hướng dẫn bạn cách fine-tune mô hình T5 với dữ liệu hỗ trợ khách hàng.
-   - Mô hình đã được huấn luyện trên Kaggle với 2 GPU và kết quả đã được upload lên Hugging Face để có thể sử dụng công khai.
+1. **Open the `t5-chatbot-bitext-gen-ai-chatbot-customer-support.ipynb` file**:
+   - Use Jupyter Notebook or Google Colab to open and run the notebook.
+   - The notebook guides you through the process of fine-tuning the T5 model with the customer support dataset.
+   - The model was trained on Kaggle with 2 GPUs and the results were uploaded to Hugging Face for public use.
 
-2. **Chạy toàn bộ notebook** để huấn luyện mô hình:
-   - Từ bước tiền xử lý dữ liệu đến fine-tuning mô hình.
-   - Sau khi mô hình được huấn luyện, mô hình sẽ được lưu trữ.
+2. **Run the entire notebook** to train the model:
+   - From data preprocessing to fine-tuning the model.
+   - After training, the model will be saved and uploaded to Hugging Face.
 
-## Triển khai Giao diện Web
+## Deploying the Web Interface
 
-1. **Chạy Giao diện Web**:
-   - Sau khi fine-tune mô hình, bạn có thể sử dụng tệp `index.html` để triển khai giao diện chatbot trên web.
-   - Giao diện web này sử dụng API của Hugging Face để gửi yêu cầu từ HTML và nhận phản hồi từ mô hình đã được huấn luyện.
+1. **Run the Web Interface**:
+   - After fine-tuning the model, you can use the `index.html` file to deploy the chatbot web interface.
+   - The web interface uses Hugging Face’s API to send requests and receive responses from the fine-tuned model.
 
-2. **Gửi yêu cầu từ HTML**:
-   - Giao diện web sẽ gọi API từ Hugging Face để tương tác với mô hình và nhận phản hồi cho người dùng.
+2. **Sending requests from HTML**:
+   - The web interface sends requests to the Hugging Face API to interact with the model and get responses.
 
-## Các Thư viện Được Sử Dụng
+## Libraries Used
 
-- **evaluate**: Đánh giá hiệu suất mô hình.
-- **sentence_transformers**: Dùng để trích xuất đặc trưng câu cho các tính toán độ tương đồng.
-- **faiss-cpu**: Dùng để tìm kiếm tương đồng trong không gian vector.
-- **rouge_score**: Đánh giá chất lượng của câu trả lời được sinh ra.
-- **bert-score**: Đánh giá độ chính xác giữa văn bản sinh ra và văn bản tham chiếu.
-- **transformers**: Thư viện chính để sử dụng mô hình T5.
-- **torch**: Thư viện tính toán cho các mô hình học sâu.
-- **matplotlib, seaborn**: Dùng để vẽ biểu đồ trực quan trong quá trình phân tích và đánh giá mô hình.
+- **evaluate**: For evaluating model performance.
+- **sentence_transformers**: Used for sentence embedding and similarity calculations.
+- **faiss-cpu**: Used for similarity search in vector space.
+- **rouge_score**: For evaluating the quality of generated responses.
+- **bert-score**: For scoring the generated text against reference text.
+- **transformers**: The main library for working with the T5 model.
+- **torch**: Deep learning framework used for model training and inference.
+- **matplotlib, seaborn**: For visualizing results during analysis and evaluation.
 
-## Đóng góp
+## Contributing
 
-Mọi đóng góp đều được hoan nghênh! Nếu bạn phát hiện lỗi, có đề xuất cải tiến hoặc muốn thêm tính năng mới, vui lòng tạo một issue hoặc gửi pull request.
+Contributions are welcome! If you find any issues, have suggestions for improvements, or want to add new features, please create an issue or submit a pull request.
 
 ---
