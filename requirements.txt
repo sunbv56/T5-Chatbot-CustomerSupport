@@ -1,0 +1,11 @@
+evaluate
+sentence_transformers
+faiss-cpu
+rouge_score
+bert-score
+transformers
+torch
+pandas
+matplotlib
+seaborn
+datasets
